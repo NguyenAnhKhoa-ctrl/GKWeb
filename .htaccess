@@ -1,0 +1,25 @@
+# File: .htaccess (Dành cho máy chủ Web Apache / Shared Hosting cPanel)
+# 1. Tắt việc liệt kê danh sách file trong thư mục nếu không có file index
+Options -Indexes
+
+# 2. Tự động chuyển hướng mọi truy cập HTTP thường sang HTTPS bảo mật (301 Redirect)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP_HOST} !^localhost [NC]
+    RewriteCond %{HTTP_HOST} !^127\.0\.0\.1 [NC]
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# 3. Chặn người ngoài truy cập trực tiếp vào file nhạy cảm (.env, .sql, .log)
+<FilesMatch "^\.env|schema\.sql|\.log$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# 4. Thêm các HTTP Security Headers cơ bản trên môi trường Production
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "title": "Cài đặt Web Server (Apache\/Nginx) và PHP 8.2 trên máy chủ Ubuntu",
+        "category": "Server Setup",
+        "status": "completed"
+    },
+    {
+        "id": 2,
+        "title": "Tạo Database MySQL và cấp quyền tối thiểu cho tài khoản deploy_user",
+        "category": "Database",
+        "status": "completed"
+    },
+    {
+        "id": 3,
+        "title": "Trỏ bản ghi DNS (A Record) từ tên miền về địa chỉ IP Public của máy chủ",
+        "category": "Domain & HTTPS",
+        "status": "completed"
+    },
+    {
+        "id": 4,
+        "title": "Cài đặt chứng chỉ số SSL\/TLS miễn phí Let's Encrypt bằng công cụ Certbot",
+        "category": "Domain & HTTPS",
+        "status": "completed"
+    },
+    {
+        "id": 5,
+        "title": "Cấu hình file .env và tắt hiển thị lỗi chi tiết (display_errors = 0)",
+        "category": "Security & Optimization",
+        "status": "in_progress"
+    },
+    {
+        "id": 6,
+        "title": "Thiết lập tự động sao lưu cơ sở dữ liệu (mysqldump) mỗi ngày lúc 02:00 sáng",
+        "category": "Database",
+        "status": "pending"
+    }
+]

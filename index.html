@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeployTrack - Bảng Điều Khiển Triển Khai Ứng Dụng Web</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <header class="top-header">
+        <div class="container header-flex">
+            <div>
+                <span class="badge-topic">Chủ đề 5: Deployment of Web Applications</span>
+                <h1>DeployTrack – Giám Sát &amp; Quản Lý Triển Khai Web</h1>
+                <p class="subtitle">Ứng dụng mẫu xây dựng bằng HTML5, CSS3, JavaScript (Fetch API), PHP (PDO) &amp; MySQL</p>
+            </div>
+            <div class="team-box">
+                <div><strong>Nhóm thực hiện:</strong></div>
+                <div>Lý Hạo Danh – 52400175</div>
+                <div>Nguyễn Anh Khoa – 52400051</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Phần 1: Kiểm tra trạng thái máy chủ thực tế & Thư viện PHP (Gợi ý 3) -->
+        <section class="card">
+            <div class="card-header">
+                <h2>1. Trạng Thái Máy Chủ Thực Tế &amp; Kiểm Tra Thư Viện PHP (Server Readiness)</h2>
+                <button id="btn-refresh-health" class="btn btn-outline">↻ Kiểm tra lại máy chủ</button>
+            </div>
+            <div class="health-grid" id="health-grid">
+                <div class="health-item">
+                    <span class="health-label">Môi trường chạy (APP_ENV)</span>
+                    <strong class="health-value" id="env-val">Đang kiểm tra...</strong>
+                </div>
+                <div class="health-item">
+                    <span class="health-label">Bảo mật HTTPS / SSL</span>
+                    <strong class="health-value" id="https-val">Đang kiểm tra...</strong>
+                </div>
+                <div class="health-item">
+                    <span class="health-label">Cơ sở dữ liệu MySQL (PDO)</span>
+                    <strong class="health-value" id="db-val">Đang kiểm tra...</strong>
+                </div>
+                <div class="health-item">
+                    <span class="health-label">Web Server &amp; Phiên bản PHP</span>
+                    <strong class="health-value" id="php-val">Đang kiểm tra...</strong>
+                </div>
+            </div>
+
+            <!-- Khung kiểm tra chi tiết các thư viện mở rộng của PHP (Gợi ý 3) -->
+            <div class="ext-section">
+                <h3 class="sub-heading">Kiểm tra các thư viện &amp; thông số cấu hình PHP bắt buộc khi đi triển khai:</h3>
+                <div class="ext-grid" id="ext-grid">
+                    <!-- Được điền tự động bởi JavaScript từ api/health.php -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Phần 2: Quản lý danh sách công việc triển khai + Lọc/Tìm kiếm (Gợi ý 2) + Khôi phục mẫu (Gợi ý 5) -->
+        <section class="card">
+            <div class="card-header">
+                <h2>2. Danh Sách Hạng Mục Triển Khai (Deployment Checklist – CRUD MySQL)</h2>
+                <div class="header-actions">
+                    <span class="progress-badge" id="progress-badge">Hoàn thành: 0/0</span>
+                    <button id="btn-reset-tasks" class="btn btn-warning" title="Khôi phục lại 6 hạng mục mẫu ban đầu">↺ Khôi phục 6 bước mẫu</button>
+                </div>
+            </div>
+
+            <!-- Form thêm hạng mục mới -->
+            <form id="task-form" class="task-form">
+                <input type="text" id="task-title" placeholder="Nhập hạng mục triển khai mới (VD: Cấu hình tường lửa UFW mở cổng 443)..." required>
+                <select id="task-category">
+                    <option value="Server Setup">1. Thiết lập Máy chủ (Server Setup)</option>
+                    <option value="Database">2. Cấu hình CSDL (Database)</option>
+                    <option value="Domain & HTTPS">3. Tên miền &amp; HTTPS (SSL)</option>
+                    <option value="Security & Optimization">4. Bảo mật &amp; Tối ưu hóa</option>
+                </select>
+                <button type="submit" class="btn btn-primary">+ Thêm hạng mục</button>
+            </form>
+
+            <!-- Thanh lọc theo nhóm hạng mục và tìm kiếm từ khóa (Gợi ý 2) -->
+            <div class="filter-bar">
+                <div class="filter-tabs" id="filter-tabs">
+                    <button type="button" class="filter-btn active" data-category="ALL">Tất cả</button>
+                    <button type="button" class="filter-btn" data-category="Server Setup">Server Setup</button>
+                    <button type="button" class="filter-btn" data-category="Database">Database</button>
+                    <button type="button" class="filter-btn" data-category="Domain & HTTPS">Domain &amp; HTTPS</button>
+                    <button type="button" class="filter-btn" data-category="Security & Optimization">Security &amp; Optimization</button>
+                </div>
+                <input type="text" id="search-input" class="search-input" placeholder="🔍 Tìm nhanh công việc...">
+            </div>
+
+            <div class="table-responsive">
+                <table class="task-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nội dung công việc triển khai</th>
+                            <th>Nhóm hạng mục</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="task-list">
+                        <tr>
+                            <td colspan="5" class="text-center">Đang tải dữ liệu từ PHP Backend...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Phần 3: Công cụ tạo nhanh file cấu hình .env & .htaccess (Gợi ý 4) -->
+        <section class="card">
+            <div class="card-header">
+                <h2>3. Công Cụ Tạo Nhanh File Cấu Hình Triển Khai (.env &amp; .htaccess Generator)</h2>
+                <span class="badge-sub">Hỗ trợ cấu hình lên Hosting / VPS</span>
+            </div>
+            <p class="section-desc">
+                Nhập thông số tên miền và cơ sở dữ liệu của máy chủ thực tế bên dưới, công cụ sẽ tự động sinh ra nội dung chuẩn cho file
+                <code>.env</code> (bảo mật mật khẩu) và file <code>.htaccess</code> (ép buộc chuyển hướng HTTPS &amp; khóa file nhạy cảm).
+            </p>
+
+            <div class="gen-form-grid">
+                <div class="form-group">
+                    <label for="gen-domain">Tên miền thực tế (Domain):</label>
+                    <input type="text" id="gen-domain" value="https://deploytrack-demo.id.vn">
+                </div>
+                <div class="form-group">
+                    <label for="gen-env">Môi trường chạy (APP_ENV):</label>
+                    <select id="gen-env">
+                        <option value="production" selected>production (Máy chủ thật - Tắt báo lỗi)</option>
+                        <option value="development">development (Máy cá nhân - Bật báo lỗi)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="gen-dbhost">Địa chỉ MySQL (DB_HOST):</label>
+                    <input type="text" id="gen-dbhost" value="127.0.0.1">
+                </div>
+                <div class="form-group">
+                    <label for="gen-dbname">Tên Cơ sở dữ liệu (DB_NAME):</label>
+                    <input type="text" id="gen-dbname" value="deploytrack_db">
+                </div>
+                <div class="form-group">
+                    <label for="gen-dbuser">Tài khoản MySQL (DB_USER):</label>
+                    <input type="text" id="gen-dbuser" value="deploy_user">
+                </div>
+                <div class="form-group">
+                    <label for="gen-dbpass">Mật khẩu MySQL (DB_PASS):</label>
+                    <input type="text" id="gen-dbpass" value="MatKhauManh_2026!@#">
+                </div>
+            </div>
+
+            <div class="gen-actions">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="gen-https" checked>
+                    Bật tự động chuyển hướng mọi truy cập HTTP sang HTTPS (301 Redirect)
+                </label>
+                <button type="button" id="btn-generate-config" class="btn btn-primary">⚡ Tạo cấu hình .env &amp; .htaccess</button>
+            </div>
+
+            <div class="gen-output-grid">
+                <div class="code-box">
+                    <div class="code-box-header">
+                        <strong>Nội dung file <code>.env</code></strong>
+                        <button type="button" class="btn-copy" onclick="copyCode('env-output')">Sao chép</button>
+                    </div>
+                    <pre id="env-output"></pre>
+                </div>
+                <div class="code-box">
+                    <div class="code-box-header">
+                        <strong>Nội dung file <code>.htaccess</code> (Apache / Hosting)</strong>
+                        <button type="button" class="btn-copy" onclick="copyCode('htaccess-output')">Sao chép</button>
+                    </div>
+                    <pre id="htaccess-output"></pre>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Báo cáo Giữa kỳ môn Lập trình Web và Ứng dụng (503073) – GVHD: Giảng viên Trần Đại Nhân – Đại học Tôn Đức Thắng</p>
+    </footer>
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
